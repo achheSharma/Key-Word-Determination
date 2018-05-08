@@ -3,7 +3,7 @@ import re
 import operator
 import nltk
 # from nltk.book import *
-from textblob import TextBlob
+# from textblob import TextBlob
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords, gutenberg, brown, inaugural, webtext, reuters, state_union, abc, names
