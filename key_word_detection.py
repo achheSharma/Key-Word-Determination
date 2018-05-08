@@ -2,12 +2,15 @@ import math
 import re
 import operator
 import nltk
-from nltk.book import *
+# from nltk.book import *
 from textblob import TextBlob
+from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords, gutenberg, brown, inaugural, webtext, reuters, state_union, abc, names
 
 count_of_documents = 0
+
+path = "C:\\Users\\aksha\\Desktop\\Key Word Detection\\Books\\"
 
 def stop_words():
     stop_words = set(stopwords.words('english'))
@@ -51,7 +54,7 @@ def IDF(corpuses, keyword, flag): #Inverse Document Frequency
         else:
             count_of_documents = len(corpuses[0])
             for j in i:
-                words = set([w.lower() for w in j])
+                words = word_tokenize(j)
                 if keyword in words:
                     hit_count = hit_count+1
     idf = math.log1p(count_of_documents/hit_count)
@@ -59,7 +62,14 @@ def IDF(corpuses, keyword, flag): #Inverse Document Frequency
 
 categorized = [brown, reuters]
 plaintext = [gutenberg, inaugural, names, webtext]
-books = [text1, text2, text3, text4, text5, text6, text7, text8, text9]
+files = ["Book1.txt", "Book2.txt", "Book3.txt", "Book4.txt", "Book5.txt", "Book6.txt", "Book7.txt", "Book8.txt", "Book9.txt"]
+books = []
+for i in range(len(files)):
+    file = open(path+files[i], 'r')
+    text = file.read()
+    file.close()
+    books.append(text)
+
 # corpuses = categorized + plaintext
 corpuses = [books]
 
@@ -69,6 +79,9 @@ text = file.read()
 
 words = word_tokenize(text)
 words = [w.lower() for w in words]
+
+lmtzr = WordNetLemmatizer()
+words = [lmtzr.lemmatize(w) for w in words]
 
 count_of_words = len(words)
 fd = nltk.FreqDist(words)
@@ -102,9 +115,11 @@ sorted_words_dict = sorted(words_dict.items(), key=operator.itemgetter(1), rever
 
 print(sorted_words_dict, "\n")
 
-print("\nKeywords")
+print("Keywords:")
+keywords = []
 for i in range(len(sorted_words_dict)):
-    if sorted_words_dict[0][1] - sorted_words_dict[i][1] > 0.5*sorted_words_dict[0][1]:
+    if (sorted_words_dict[0][1] - sorted_words_dict[i][1] > 0.5*sorted_words_dict[0][1]) or i>5:
         break
     else:
+        keywords.append(sorted_words_dict[i][0])
         print(sorted_words_dict[i][0])
