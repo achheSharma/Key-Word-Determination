@@ -105,10 +105,7 @@ for i in words:
 for i in words:
     tf = fd[i]/count_of_words #Term Frequency
     idf = IDF(corpuses, i, 1) #Inverse Document Frequency
-    if idf == math.inf:
-        tf_idf = 1
-    else:
-        tf_idf = tf*idf
+    tf_idf = tf*idf
     words_dict[i] = tf_idf
 
 sorted_words_dict = sorted(words_dict.items(), key=operator.itemgetter(1), reverse = True)
